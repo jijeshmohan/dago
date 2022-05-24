@@ -19,11 +19,15 @@ TODO:
 
 1. Create a config directory and specify templates directory
 
-2. Create or use an existing template 
+    `dago config new` - This command create a new config file in user's config directory `~/.config/dago/config.yml`
 
-3. Run `daco gen <template-name>`
+1. Specify the templates folder in the above config file ( default is `~/.config/dago/templates`)
 
-4. Input all the questions 
+1. Create or use an existing template 
+
+1. Run `daco gen <template-name>`
+
+1. Input all the questions 
 
 
 ## How to create a new template 
