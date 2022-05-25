@@ -55,13 +55,22 @@ type Config struct {
 	TemplatesPath string `yaml:"templates-path"`
 }
 
-func (c *Config) save(configPath string) error {
-	d, err := yaml.Marshal(c)
+func (c Config) save(configPath string) error {
+	d, err := yaml.Marshal(&c)
 	if err != nil {
 		return fmt.Errorf("error marshalling config: %v", err)
 	}
 
 	return writeFile(configFilePath(configPath), d)
+}
+
+func (c Config) String() string {
+	d, err := yaml.Marshal(&c)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(d)
 }
 
 func writeFile(path string, data []byte) error {

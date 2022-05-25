@@ -34,6 +34,23 @@ func Config() *cli.Command {
 					return nil
 				},
 			},
+			{
+				Name:  "show",
+				Usage: "show current configuration",
+				Action: func(c *cli.Context) error {
+					configPath := c.String("config")
+
+					conf, err := config.Load(configPath)
+					if err != nil {
+						return err
+					}
+
+					fmt.Printf("\nUsing configuration from path %s\n", configPath)
+					fmt.Println("\n---")
+					fmt.Printf("%s", conf.String())
+					return nil
+				},
+			},
 		},
 	}
 }
