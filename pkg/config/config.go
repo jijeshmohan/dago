@@ -11,7 +11,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func NewConfig(configPath string) error {
+func Create(configPath string) error {
 	configPath = expandUserPath(configPath)
 
 	config := Config{
@@ -20,6 +20,12 @@ func NewConfig(configPath string) error {
 
 	if isConfigFileExist(configPath) {
 		return fmt.Errorf("config file already exist in the path: %s", configPath)
+	}
+
+	if !isPathExist(config.TemplatesPath) {
+		if err := os.MkdirAll(configPath, 0755); err != nil {
+			return fmt.Errorf("error creating config folder: %v", err)
+		}
 	}
 
 	return config.save(configPath)
@@ -95,4 +101,9 @@ func expandUserPath(folderPath string) string {
 	dir := usr.HomeDir
 	folderPath = filepath.Join(dir, folderPath[2:])
 	return folderPath
+}
+
+func isPathExist(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
 }
