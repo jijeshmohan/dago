@@ -23,10 +23,18 @@ func CreateTemplate(name string, folderPath string) (Template, error) {
 
 	t := sampleTemplate(name)
 	if err := t.save(folderPath); err != nil {
+		if removeErr := removeTemplate(folderPath); removeErr != nil {
+			fmt.Printf("unable to clean the directory %v\n", removeErr)
+		}
+
 		return Template{}, err
 	}
 
 	return t, nil
+}
+
+func removeTemplate(folderPath string) error {
+	return os.RemoveAll(folderPath)
 }
 
 type Template struct {
