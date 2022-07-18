@@ -1,11 +1,12 @@
 package textrender
 
 import (
-	"io/ioutil"
+	"io/fs"
 	"os"
-	"path"
 	"testing"
+	"testing/fstest"
 
+	"github.com/jijeshmohan/dago/pkg/xfilesystem"
 	"github.com/stretchr/testify/require"
 )
 
@@ -59,40 +60,33 @@ func TestConditionalTemplate(t *testing.T) {
 }
 
 func TestRenderFile(t *testing.T) {
-	tempDir, err := ioutil.TempDir("", "test-temp")
+	tempDir, err := os.MkdirTemp("", "test-temp")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 
-	tempFile := generateFile(t, "sample.go", []byte(`package {{.name}}\n// {{.author}}`))
+	destFS := xfilesystem.NewRWFileSystem(tempDir, os.DirFS(tempDir))
+
+	fsTest := xfilesystem.NewFileSystem("/tmp", fstest.MapFS{
+		"sample.go": {Data: []byte(`package {{.name}}\n// {{.author}}`)},
+	})
 
 	t.Run("should render file with template content", func(t *testing.T) {
-		err := RenderFile(tempFile, path.Join(tempDir, "result.go"), map[string]interface{}{
+		err := RenderFile(fsTest, "sample.go", destFS, "result.go", map[string]interface{}{
 			"name":   "sample",
 			"author": "user1",
 		})
 		require.NoError(t, err)
 
-		content, err := ioutil.ReadFile(path.Join(tempDir, "result.go"))
+		content, err := fs.ReadFile(destFS, "result.go")
 		require.NoError(t, err)
 		require.Equal(t, []byte(`package sample\n// user1`), content)
 	})
 	t.Run("should render with no value tag if the data is not preset", func(t *testing.T) {
-		err := RenderFile(tempFile, path.Join(tempDir, "result_no.go"), map[string]interface{}{})
+		err := RenderFile(fsTest, "sample.go", destFS, "result_no.go", map[string]interface{}{})
 		require.NoError(t, err)
 
-		content, err := ioutil.ReadFile(path.Join(tempDir, "result_no.go"))
+		content, err := fs.ReadFile(destFS, "result_no.go")
 		require.NoError(t, err)
 		require.Equal(t, `package <no value>\n// <no value>`, string(content))
 	})
-}
-
-func generateFile(t *testing.T, pattern string, content []byte) string {
-	f, err := ioutil.TempFile("", pattern)
-	require.NoError(t, err)
-	defer f.Close()
-
-	_, err = f.Write(content)
-	require.NoError(t, err)
-
-	return f.Name()
 }

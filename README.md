@@ -4,12 +4,10 @@ Daco is a code generation utility which uses templates
 
 ## Features 
 
-- Generate files and folder structure for project 
-- Supports templates 
-- Variables 
-- Interactive commandline tool to take input variables 
+- Generate files and folder structure for project
+- Support Variables
+- Interactive commandline tool to take input variables and generate templates
 - Highly configurable
-
 
 ## Install
 

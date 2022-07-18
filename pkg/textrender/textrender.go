@@ -2,11 +2,13 @@ package textrender
 
 import (
 	"fmt"
-	"os"
+	"io/fs"
+	"path/filepath"
 	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig"
+	"github.com/jijeshmohan/dago/pkg/xfilesystem"
 	"github.com/jijeshmohan/dago/pkg/xstring"
 )
 
@@ -28,24 +30,25 @@ func RenderString(content string, data map[string]interface{}) (string, error) {
 	return buf.String(), nil
 }
 
-func RenderFile(srcPath, destPath string, data map[string]interface{}) error {
-	templateContent, err := os.ReadFile(srcPath)
+func RenderFile(srcFS xfilesystem.FS, srcFileName string, destFS xfilesystem.RwFS, destFilename string, data map[string]interface{}) error {
+	templateContent, err := fs.ReadFile(srcFS, srcFileName)
 	if err != nil {
 		return err
 	}
 
 	t, err := createTemplate(string(templateContent))
 	if err != nil {
-		return fmt.Errorf("unable to parse template file %s : %v", srcPath, err)
+		return fmt.Errorf("unable to parse template file %s : %v", filepath.Join(srcFS.BasePath(), srcFileName), err)
 	}
 
-	f, err := os.Create(destPath)
+	f, err := destFS.CreateFile(destFilename)
 	if err != nil {
-		return fmt.Errorf("unable to create dest file %s: %v", destPath, err)
+		return fmt.Errorf("unable to create dest file %s: %v", destFilename, err)
 	}
+	defer f.Close()
 
 	if err := t.Execute(f, data); err != nil {
-		return fmt.Errorf("render error for %s: %v", srcPath, err)
+		return fmt.Errorf("render error for %s: %v", destFilename, err)
 	}
 
 	return nil

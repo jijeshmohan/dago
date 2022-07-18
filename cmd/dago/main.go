@@ -39,5 +39,6 @@ func registerCommands(app *cli.App) {
 	app.Commands = []*cli.Command{
 		commands.Config(),
 		commands.Template(),
+		commands.Generate(),
 	}
 }

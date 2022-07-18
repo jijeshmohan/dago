@@ -44,9 +44,7 @@ func Template() *cli.Command {
 				Name:  "validate",
 				Usage: "validate a given template",
 				Action: func(c *cli.Context) error {
-					// configPath := c.String("config")
-
-					return nil
+					panic("TODO")
 				},
 			},
 		},
