@@ -50,8 +50,9 @@ func Template() *cli.Command {
 				},
 			},
 			{
-				Name:  "list",
-				Usage: "list all available templates",
+				Name:    "list",
+				Aliases: []string{"ls"},
+				Usage:   "list all available templates",
 				Action: func(c *cli.Context) error {
 					configPath := c.String("config")
 					conf, err := config.Load(configPath)
