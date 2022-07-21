@@ -26,10 +26,16 @@ func NewFilesystemRender(logger xlogger.Logger) Renderer {
 func (fs FilesystemRenderer) Render(template templates.Template, data map[string]interface{}, rwFS xfilesystem.RwFS) error {
 	fs.logger.Info("generating template %s in %s", template.Name, rwFS.BasePath())
 	if err := recursiveCopy(template.Filesystem(), rwFS, data); err != nil {
+		if err := rwFS.CleanupNewFiles(); err != nil {
+			fs.logger.Error("unable to clean up files %s", err)
+		}
 		return err
 	}
 
 	if err := fs.taskExecuter.ExecuteTasks(template.Tasks, data, rwFS.BasePath()); err != nil {
+		if err := rwFS.CleanupNewFiles(); err != nil {
+			fs.logger.Error("unable to clean up files %s", err)
+		}
 		return err
 	}
 
