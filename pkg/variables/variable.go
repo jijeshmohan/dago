@@ -17,11 +17,11 @@ type Variable struct {
 	Name        string       `json:"name,omitempty"        yaml:"name"`
 	Message     string       `json:"message,omitempty"     yaml:"message"`
 	Help        string       `json:"help,omitempty"        yaml:"help"`
-	Default     interface{}  `json:"default,omitempty"     yaml:"default"`
+	Default     interface{}  `json:"default,omitempty"     yaml:"default,omitempty"`
 	Type        VariableType `json:"type,omitempty"        yaml:"type"`
-	Options     []string     `json:"options,omitempty"     yaml:"options"`
-	Validators  []string     `json:"validators,omitempty"  yaml:"validators"`
-	Transformer string       `json:"transformer,omitempty" yaml:"transformer"`
+	Options     []string     `json:"options,omitempty"     yaml:"options,omitempty"`
+	Validators  []string     `json:"validators,omitempty"  yaml:"validators,omitempty"`
+	Transformer string       `json:"transformer,omitempty" yaml:"transformer,omitempty"`
 }
 
 //Validate variable

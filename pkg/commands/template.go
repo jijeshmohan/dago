@@ -25,13 +25,19 @@ func Template() *cli.Command {
 		},
 		Subcommands: []*cli.Command{
 			{
-				Name:  "new",
-				Usage: "create template",
+				Name:      "new",
+				Usage:     "create template",
+				UsageText: "template new [template-name]",
 				Action: func(c *cli.Context) error {
 					configPath := c.String("config")
 					conf, err := config.Load(configPath)
 					if err != nil {
 						return err
+					}
+
+					if c.NArg() < 1 {
+						fmt.Println(c.Command.UsageText)
+						return cli.Exit("missing arguments, please check usage", 1)
 					}
 
 					if _, err := templates.CreateTemplate(c.Args().First(), conf.TemplatesPath); err != nil {
