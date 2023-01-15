@@ -4,9 +4,10 @@ Dago is a powerful code generation tool that streamlines the development process
 
 ## Features 
 
-- Generate files and folder structure for project
+- Generate codes, files and folders from templates
+- Configure to run commands part of the code generation
 - Support Variables
-- Interactive commandline tool to take input variables and generate templates
+- Interactive commandline to take input variables and generate templates
 - Highly configurable
 
 ## Install
