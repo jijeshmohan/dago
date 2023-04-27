@@ -145,9 +145,9 @@ Task command line name or argument can use templates as well . e.g If we need to
 
 ```yaml
 tasks:
-	- command: "go"
-	  arguments: 
-		  - "mod"
-		  - "init"
-		  - "{{.module}}"
+  - command: "go"
+    arguments: 
+      - "mod"
+      - "init"
+      - "{{.module}}"
 ```
