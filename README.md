@@ -1,4 +1,4 @@
-![build status](https://github.com/jijeshmohan/dago/actions/workflows/build.yml/badge.svg) 
+![build status](https://github.com/jijeshmohan/dago/actions/workflows/go.yml/badge.svg) 
 # Dago
 
 Dago is a powerful code generation tool that streamlines the development process. With Dago, you can easily generate a comprehensive file and folder structure for your projects, all while utilizing customizable templates and variables. The interactive command-line interface makes it easy to input variables and generate templates. And with its high level of configurability, Dago is perfect for developers looking to save time and increase productivity.
