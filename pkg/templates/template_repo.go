@@ -68,7 +68,7 @@ func loadTemplates(fsys xfilesystem.FS) (map[string]Template, error) {
 
 		template, err := loadTemplate(templateDir)
 		if err != nil {
-			// TODO: logging
+			fmt.Printf("Error while loading template %s: %v\n", c.Name(), err)
 			continue
 		}
 

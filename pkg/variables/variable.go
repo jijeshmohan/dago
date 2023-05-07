@@ -24,7 +24,7 @@ type Variable struct {
 	Transformer string       `json:"transformer,omitempty" yaml:"transformer,omitempty"`
 }
 
-//Validate variable
+// Validate variable
 func (v Variable) Validate() error {
 	if v.Name == "" {
 		return errors.New("name can't be empty")

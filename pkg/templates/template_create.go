@@ -1,6 +1,7 @@
 package templates
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -89,7 +90,7 @@ func getVariable() (variables.Variable, error) {
 		Message: "Enter the variable name",
 	}
 	var variableName string
-	if err := survey.AskOne(variableNameQ, &variableName); err != nil {
+	if err := survey.AskOne(variableNameQ, &variableName, survey.WithValidator(survey.Required), survey.WithValidator(variableNameValidator)); err != nil {
 		return variables.Variable{}, err
 	}
 
@@ -148,4 +149,12 @@ func sampleTemplate(name string) Template {
 	return Template{
 		Name: name,
 	}
+}
+
+func variableNameValidator(val interface{}) error {
+	if str, ok := val.(string); !ok || (strings.Contains(str, "-") || strings.Contains(str, ".")) {
+		return errors.New("name should not contain . or -")
+	}
+
+	return nil
 }
