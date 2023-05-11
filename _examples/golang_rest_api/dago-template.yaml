@@ -1,30 +1,30 @@
 name: golang_rest_api
 variables:
-    - name: project_name
-      message: 'Enter project name:'
-      help: Name of the golang rest api project
-      type: text
-      validators:
-        - "required"
-      transformer: "lower"
-    - name: module
-      message: 'Enter module name:'
-      help: Golang module name of the project
-      type: text
-      default: "github.com/{{ .project_name }}/{{ .project_name }}"
-    - name: enable_db
-      message: Do you need to add database and migration features?
-      help: This will add postgres db and migration related steps
-      type: confirm
-    - name: enable_docker
-      message: Do you need docker compose for this project?
-      help: This will create a docker compose file in the project
-      type: confirm
-post-tasks:
+  - name: project_name
+    message: "Enter project name:"
+    help: Name of the golang rest api project
+    type: text
+    validators:
+      - "required"
+    transformer: "lower"
+  - name: module
+    message: "Enter module name:"
+    help: Golang module name of the project
+    type: text
+    default: "github.com/{{ .project_name }}/{{ .project_name }}"
+  - name: enable_db
+    message: Do you need to add database and migration features?
+    help: This will add postgres db and migration related steps
+    type: confirm
+  - name: enable_docker
+    message: Do you need docker compose for this project?
+    help: This will create a docker compose file in the project
+    type: confirm
+tasks:
   - command: "go"
     path: "{{ .project_name}}"
     ignore-error: false
     arguments:
       - "mod"
       - "init"
-      - "{{.module_name}}"
+      - "{{ .module }}"
